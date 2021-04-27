@@ -7,7 +7,7 @@ import {signIn} from '../../store/action';
 
 const Login = props => {
   const [inputValue, setInputValue] = useState({});
-  const {username, password} = inputValue;
+  const {email, password} = inputValue;
 
   const handleChange = e => {
     const {name, type, text} = e;
@@ -60,9 +60,9 @@ const Login = props => {
         }}>
         <InputField
           //   fieldFocus={true}
-          name="username"
-          placeholder="username"
-          value={username}
+          name="email"
+          placeholder="email"
+          value={email}
           onChange={handleChange}
         />
 

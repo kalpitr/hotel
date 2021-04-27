@@ -37,7 +37,7 @@ const AppNavigator = props => {
         props.setAuthCheckValue(true);
       } else {
         // when user is logged out
-        setAuthCheckValue(false);
+        props.setAuthCheckValue(false);
       }
     } catch (error) {
       console.log(error);
@@ -53,12 +53,11 @@ const AppNavigator = props => {
       <Tab.Navigator
         tabBarOptions={{
           keyboardHidesTabBar: true,
+          showLabel: false,
           activeTintColor: COLORS.blue,
           style: {
             backgroundColor: COLORS.white,
-            height: 60,
-            paddingBottom: 2,
-            paddingTop: 2,
+            height: 50,
           },
           labelStyle: {fontSize: SIZES.body4},
         }}>
@@ -66,14 +65,18 @@ const AppNavigator = props => {
           name="Home"
           component={Home}
           options={{
-            tabBarIcon: () => <Icon name="home" size={30} />,
+            tabBarIcon: () => (
+              <Icon name="home" size={30} color={COLORS.gray} />
+            ),
           }}
         />
         <Tab.Screen
           name="Bookings"
           component={Bookings}
           options={{
-            tabBarIcon: () => <BookingIcon name="list" size={30} />,
+            tabBarIcon: () => (
+              <BookingIcon name="list" size={30} color={COLORS.gray} />
+            ),
           }}
         />
         <Tab.Screen
@@ -81,7 +84,11 @@ const AppNavigator = props => {
           component={Account}
           options={{
             tabBarIcon: () => (
-              <AccountIcon name="account-cog-outline" size={30} />
+              <AccountIcon
+                name="account-cog-outline"
+                size={30}
+                color={COLORS.gray}
+              />
             ),
           }}
         />
@@ -106,8 +113,8 @@ const AppNavigator = props => {
 
   return (
     <NavigationContainer>
-      {/* {props.isAuth ? ( */}
-      {props.value !== null ? (
+      {props.isAuth ? (
+        // {props.value !== null ? (
         <Stack.Navigator>
           <React.Fragment>
             <Stack.Screen
@@ -123,7 +130,7 @@ const AppNavigator = props => {
                 headerShown: getHeaderTitle(route) === 'Home' ? false : true,
               })}
             />
-            <Stack.Screen   
+            <Stack.Screen
               name="RoomBook"
               component={RoomBook}
               options={{title: 'Book Room', headerTitleAlign: 'center'}}

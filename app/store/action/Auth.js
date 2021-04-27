@@ -10,11 +10,11 @@ import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import toastMessage from '../../utils/toastMessage';
 
-export const signIn = (data) => async (dispatch) => {
+export const signIn = data => async dispatch => {
   dispatch({type: SIGNIN_LOAD});
   try {
     const result = await Axios.post(
-      'https://www.reachnbuy.com/test/api/v1/user/auth/login',
+      'https://reachnbuy.com/test/api/v1/login',
       data,
     );
     dispatch({type: SIGNIN_FETCH, payload: result.data.accessToken});
@@ -27,8 +27,8 @@ export const signIn = (data) => async (dispatch) => {
   }
 };
 
-export const signOut = () => async (dispatch) => {
-  console.log("logging out")
+export const signOut = () => async dispatch => {
+  console.log('logging out');
   try {
     const value = await AsyncStorage.removeItem('@accessToken');
     if (value === null) {
@@ -39,6 +39,6 @@ export const signOut = () => async (dispatch) => {
   }
 };
 
-export const setAuthCheckValue = (value) => (dispatch) => {
+export const setAuthCheckValue = value => dispatch => {
   dispatch({type: AUTH_CHECK, payload: value});
 };

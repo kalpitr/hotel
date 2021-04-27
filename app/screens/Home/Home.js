@@ -21,62 +21,29 @@ import {COLORS, FONTS, SIZES} from '../../constants';
 import Geolocation from '@react-native-community/geolocation';
 import {request, PERMISSIONS} from 'react-native-permissions';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import axios from 'axios';
 
 // Actions
 // import {} from '../../store/action';
 
-const Home = (props) => {
+const Home = props => {
   const map = useRef();
   const carousel = useRef(null);
 
   const [coords, setCoords] = useState({});
   const [markers, setMarkers] = useState([]);
-  const [hotels, setHotels] = useState([
-    {
-      id: 1,
-      name: 'test',
-      latitude: 19.4243769,
-      longitude: 72.811126,
-      image: require('../../assets/h1.jpg'),
-      rooms: [
-        {type: 'delux', cost: 2600},
-        {type: 'AC', cost: 2200},
-      ],
-    },
-    {
-      id: 2,
-      name: 'best',
-      latitude: 19.4252145,
-      longitude: 72.812675,
-      image: require('../../assets/h2.jpg'),
-      rooms: [
-        {type: 'delux', cost: 2600},
-        {type: 'AC', cost: 2200},
-      ],
-    },
-    {
-      id: 3,
-      name: 'rest',
-      latitude: 19.4246982,
-      longitude: 72.813954,
-      image: require('../../assets/h3.jpg'),
-      rooms: [
-        {type: 'delux', cost: 2600},
-        {type: 'AC', cost: 2200},
-      ],
-    },
-    {
-      id: 4,
-      name: 'chest',
-      latitude: 19.4252657,
-      longitude: 72.813657,
-      image: require('../../assets/h4.jpg'),
-      rooms: [
-        {type: 'delux', cost: 2600},
-        {type: 'AC', cost: 2200},
-      ],
-    },
-  ]);
+  const [hotels, setHotels] = useState([]);
+
+  const getProperties = async () => {
+    try {
+      const result = await axios.get(
+        'https://reachnbuy.com/test/api/v1/properties',
+      );
+      setHotels(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'android') {
@@ -112,6 +79,7 @@ const Home = (props) => {
   };
 
   useEffect(() => {
+    getProperties();
     requestLocationPermission();
   }, []);
 
@@ -145,9 +113,16 @@ const Home = (props) => {
       activeOpacity={0.5}
       style={styles.cardContainer}
       onPress={() => props.navigation.navigate('RoomBook', {itemId: item.id})}>
-      <Image source={item.image} style={styles.cardImage} />
-      <Text style={styles.hotelName}>{item.name}</Text>
-      {item.rooms.map((el, index) => (
+      <Image
+        source={{uri: item.imageUrl}}
+        style={styles.cardImage}
+        width={50}
+        height={50}
+      />
+      <Text>{item.name}</Text>
+      <Text>{item.address}</Text>
+      <Text>{item.price}</Text>
+      {/* {item.rooms.map((el, index) => (
         <View style={styles.roomInfo} key={index}>
           <View style={{flexDirection: 'column'}}>
             <Text
@@ -167,7 +142,7 @@ const Home = (props) => {
             </Text>
           </View>
         </View>
-      ))}
+      ))} */}
     </TouchableOpacity>
   );
 
